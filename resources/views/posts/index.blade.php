@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="dark:text-white my-8 mx-8">
-        <a href="{{ route('tags.create') }}" class="bg-red-500 p-4 rounded-md mb-8">
-            create a new tag
+        <a href="{{ route('posts.create') }}" class="bg-red-500 p-4 rounded-md mb-8">
+            create a new post
         </a>
         <table style="width: 100%" class="border my-8">
             <thead>
@@ -10,10 +10,19 @@
                         id
                     </th>
                     <th>
+                        banner
+                    </th>
+                    <th>
                         title
                     </th>
                     <th>
                         user
+                    </th>
+                    <th>
+                        tag
+                    </th>
+                    <th>
+                        view count
                     </th>
                     <th>
                         created at
@@ -24,25 +33,34 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($tags as $tag)
+                @forelse ($posts as $post)
                     <tr>
                         <td>
-                            {{ $tag->id }}
+                            {{ $post->id }}
                         </td>
                         <td>
-                            {{ $tag->title }}
+                            <img src="{{ url('/storage/'.$post->banner_url) }}" alt="" class="h-5 w-5 object-cover">
                         </td>
                         <td>
-                            {{ $tag->user->name }}
+                            {{ $post->title }}
                         </td>
                         <td>
-                            {{ $tag->created_at }}
+                            {{ $post->user->name }}
+                        </td>
+                        <td>
+                            {{ $post->tag->title }}
+                        </td>
+                        <td>
+                            {{ $post->view_count }}
+                        </td>
+                        <td>
+                            {{ $post->created_at }}
                         </td>
                         <td class="flex space-x-2">
-                            <a href="{{ route('tags.edit', ['tag' => $tag]) }}">
+                            <a href="{{ route('posts.edit', ['post' => $post]) }}">
                                 edit
                             </a>
-                            <form action="{{ route('tags.destroy', ['tag' => $tag]) }}" method="post">
+                            <form action="{{ route('posts.destroy', ['post' => $post]) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button type="submit">
@@ -54,14 +72,14 @@
                 @empty
                     <tr>
                         <td colspan="3">
-                            No tags found.
+                            No posts found.
                         </td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
 
-        {{ $tags->links() }}
+        {{ $posts->links() }}
 
 
     </div>
