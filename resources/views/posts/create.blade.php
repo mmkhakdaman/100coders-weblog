@@ -45,12 +45,12 @@
                 @enderror
             </div>
             <div class="flex flex-col">
-                <label for="tag_id">tag</label>
+                <label for="tag_ids">tag</label>
                 <select class="dark:text-black {{ $errors->has('tag') ? 'border border-rose-500' : '' }}"
-                    id="tag_id" name="tag_id" placeholder="tag_id" required>
-                    <option value="">choose the tag</option>
+                    id="tag_ids" name="tag_ids[]" placeholder="tag_ids" required multiple>
                     @foreach ($tags as $tag)
-                        <option value="{{ $tag->id }}" {{ old('tag_id') == $tag->id ? 'selected' : '' }}>
+                        <option value="{{ $tag->id }}"
+                            {{ in_array($tag->id, old('tag_ids', [])) ? 'selected' : '' }}>
                             {{ $tag->title }}</option>
                     @endforeach
                 </select>

@@ -20,7 +20,6 @@ return new class extends Migration
             $table->bigInteger('view_count')->default(0);
             $table->longText('content');
 
-            $table->foreignId('tag_id')->constrained();
             $table->foreignId('user_id')->constrained();
 
             $table->timestamps();

@@ -42,6 +42,9 @@
                             <a href="{{ route('tags.edit', ['tag' => $tag]) }}">
                                 edit
                             </a>
+                            <a href="{{ route('tags.show', ['tag' => $tag]) }}">
+                                show
+                            </a>
                             <form action="{{ route('tags.destroy', ['tag' => $tag]) }}" method="post">
                                 @csrf
                                 @method('delete')

@@ -48,7 +48,9 @@
                             {{ $post->user->name }}
                         </td>
                         <td>
-                            {{ $post->tag->title }}
+                            @foreach ($post->tags as $tag)
+                                {{ $tag->title }},
+                            @endforeach
                         </td>
                         <td>
                             {{ $post->view_count }}

@@ -4,7 +4,13 @@
             @csrf
             @method('PATCH')
             <label for="title">title</label>
-            <input class="dark:text-black" type="text" id="title" name="title" value="{{ $tag->title }}" required placeholder="title">
+            <input class="dark:text-black" type="text" id="title" name="title"
+                value="{{ old('title', $tag->title) }}" required placeholder="title">
+            @error('title')
+                <small class="text-xs text-rose-500">
+                    {{ $message }}
+                </small>
+            @enderror
 
             <button type="submit" class="bg-green-500 rounded-lg py-2 text-lg">update</button>
         </form>

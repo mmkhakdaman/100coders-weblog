@@ -6,6 +6,8 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -37,17 +39,18 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        Post::create(
+        $post = Post::create(
             [
                 'title' => $request->title,
                 'content' => $request->content,
                 'description' => $request->description,
-                'tag_id' => $request->tag_id,
                 'user_id' => auth()->id(),
-                'banner_url' => $request->file('banner')->storePublicly('banners')
+                'banner_url' => $request->file('banner')->store('banners', 'public')
             ]
         );
 
+
+        $post->tags()->attach($request->tag_ids);
 
         return redirect()->route('posts.index');
     }
@@ -65,7 +68,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $tags = Tag::all();
+        return view('posts.edit', [
+            'post' => $post,
+            'tags' => $tags,
+        ]);
     }
 
     /**
@@ -73,7 +80,25 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        // $data = $request->validated();
+        // $post->update($data);
+
+        $data = [
+            'title' => $request->title,
+            'content' => $request->content,
+            'description' => $request->description,
+        ];
+
+        if ($request->hasFile('banner')) {
+            $data['banner_url'] = $request->file('banner')->store('banners', 'public');
+            File::delete(public_path($post->banner_url));
+        }
+
+        $post->update($data);
+
+        $post->tags()->sync($request->tag_ids);
+
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -81,6 +106,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        File::delete(public_path($post->banner_url));
+        $post->delete();
+
+        return redirect()->route('posts.index');
     }
 }

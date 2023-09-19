@@ -25,7 +25,6 @@ class StorePostRequest extends FormRequest
             'title' => ['required', 'min:3'],
             'content' => ['required', 'min:10'],
             'description' => ['required', 'min:10'],
-            'tag_id' => ['required', 'exists:tags,id'],
             'banner' => ['required', 'image'],
         ];
     }
