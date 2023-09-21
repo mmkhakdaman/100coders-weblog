@@ -1,88 +1,55 @@
-<x-app-layout>
-    <div class="dark:text-white my-8 mx-8">
-        <a href="{{ route('posts.create') }}" class="bg-red-500 p-4 rounded-md mb-8">
-            create a new post
-        </a>
-        <table style="width: 100%" class="border my-8">
-            <thead>
-                <tr>
-                    <th>
-                        id
-                    </th>
-                    <th>
-                        banner
-                    </th>
-                    <th>
-                        title
-                    </th>
-                    <th>
-                        user
-                    </th>
-                    <th>
-                        tag
-                    </th>
-                    <th>
-                        view count
-                    </th>
-                    <th>
-                        created at
-                    </th>
-                    <th>
-                        settings
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($posts as $post)
-                    <tr>
-                        <td>
-                            {{ $post->id }}
-                        </td>
-                        <td>
-                            <img src="{{ url('/storage/'.$post->banner_url) }}" alt="" class="h-5 w-5 object-cover">
-                        </td>
-                        <td>
-                            {{ $post->title }}
-                        </td>
-                        <td>
-                            {{ $post->user->name }}
-                        </td>
-                        <td>
-                            @foreach ($post->tags as $tag)
-                                {{ $tag->title }},
-                            @endforeach
-                        </td>
-                        <td>
-                            {{ $post->view_count }}
-                        </td>
-                        <td>
-                            {{ $post->created_at }}
-                        </td>
-                        <td class="flex space-x-2">
-                            <a href="{{ route('posts.edit', ['post' => $post]) }}">
-                                edit
-                            </a>
-                            <form action="{{ route('posts.destroy', ['post' => $post]) }}" method="post">
-                                @csrf
-                                @method('delete')
-                                <button type="submit">
-                                    delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="3">
-                            No posts found.
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-
-        {{ $posts->links() }}
+<x-layouts.guest>
+    <div class="max-w-xl mx-auto pt-20 space-y-2">
+        <form method="get">
+            <div class="flex flex-col space-y-2">
+                <div class="flex flex-col">
+                    <label for="search" class="text-gray-800">
+                        Search
+                    </label>
+                    <input type="text" name="search" id="search" class="border border-gray-300 rounded-lg p-2">
+                </div>
+                <div class="flex flex-col">
+                    <label for="tag" class="text-gray-800">
+                        Tag
+                    </label>
+                    <select name="tag[]" id="tag" class="border border-gray-300 rounded-lg p-2" multiple>
+                        @foreach ($tags as $tag)
+                            <option value="{{ $tag->id }}" @if (in_array($tag->id, request()->query('tag', []))) selected @endif>
+                                {{ $tag->title }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white rounded-lg p-2">
+                    Search
+                </button>
+            </div>
+        </form>
 
 
+        @foreach ($posts as $post)
+            <div class="bg-white rounded-lg p-4 shadow flex space-x-2">
+                <div class="w-20 flex-shrink-0">
+                    <img src="{{ url('/storage/' . $post->banner_url) }}" alt="{{ $post->title }}"
+                        class="w-20 aspect-square object-cover">
+                </div>
+                <div class="grow flex flex-col space-y-2">
+                    <a href="{{ route('posts.show', ['post' => $post]) }}" class="text-lg font-semibold text-gray-800">
+                        {{ $post->title }}
+                    </a>
+                    <p class="text-gray-600">
+                        {{ $post->description }}
+                    </p>
+                    <p>
+                        {{ $post->created_at->diffForHumans() }}
+                    </p>
+                </div>
+            </div>
+        @endforeach
+
+        <div class="flex justify-center">
+            {{ $posts->links() }}
+        </div>
     </div>
-</x-app-layout>
+
+</x-layouts.guest>

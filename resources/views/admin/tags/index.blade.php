@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="dark:text-white my-8 mx-8">
-        <a href="{{ route('tags.create') }}" class="bg-red-500 p-4 rounded-md mb-8">
+        <a href="{{ route('admin.tags.create') }}" class="bg-red-500 p-4 rounded-md mb-8">
             create a new tag
         </a>
         <table style="width: 100%" class="border my-8">
@@ -39,13 +39,13 @@
                             {{ $tag->created_at }}
                         </td>
                         <td class="flex space-x-2">
-                            <a href="{{ route('tags.edit', ['tag' => $tag]) }}">
+                            <a href="{{ route('admin.tags.edit', ['tag' => $tag]) }}">
                                 edit
                             </a>
-                            <a href="{{ route('tags.show', ['tag' => $tag]) }}">
+                            <a href="{{ route('admin.tags.show', ['tag' => $tag]) }}">
                                 show
                             </a>
-                            <form action="{{ route('tags.destroy', ['tag' => $tag]) }}" method="post">
+                            <form action="{{ route('admin.tags.destroy', ['tag' => $tag]) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button type="submit">

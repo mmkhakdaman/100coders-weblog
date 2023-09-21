@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="dark:text-white my-8 mx-8">
-        <form action="{{ route('tags.update', ['tag' => $tag]) }}" method="POST" class="flex flex-col space-y-5">
+        <form action="{{ route('admin.tags.update', ['tag' => $tag]) }}" method="POST" class="flex flex-col space-y-5">
             @csrf
             @method('PATCH')
             <label for="title">title</label>

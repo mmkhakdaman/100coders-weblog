@@ -7,7 +7,7 @@
                 </p>
             @endforeach
         @endif
-        <form action="{{ route('tags.store') }}" method="POST" class="flex flex-col space-y-5">
+        <form action="{{ route('admin.tags.store') }}" method="POST" class="flex flex-col space-y-5">
             @csrf
             <label for="title">title</label>
             <input class="dark:text-black {{ $errors->has('title') ? 'border border-rose-500' : '' }}"

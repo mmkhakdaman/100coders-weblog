@@ -18,7 +18,7 @@
                     <div class="flex flex-col space-y-2 border border-gray-200 p-2">
 
                         <h3 class="text-xl font-bold">
-                            <a href="{{ route('posts.show', ['post' => $post]) }}">
+                            <a href="{{ route('admin.posts.show', ['post' => $post]) }}">
                                 {{ $post->title }}
                             </a>
                         </h3>

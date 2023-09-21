@@ -1,13 +1,12 @@
 <x-app-layout>
     <div class="dark:text-white my-8 mx-8">
-        <form action="{{ route('posts.update', ['post' => $post]) }}" method="POST" class="flex flex-col space-y-5"
+        <form action="{{ route('admin.posts.store') }}" method="POST" class="flex flex-col space-y-5"
             enctype="multipart/form-data">
             @csrf
-            @method('PUT')
             <div class="flex flex-col">
                 <label for="title">title</label>
                 <input class="dark:text-black {{ $errors->has('title') ? 'border border-rose-500' : '' }}" type="text"
-                    id="title" value="{{ old('title', $post->title) }}" name="title" placeholder="title" required>
+                    id="title" value="{{ old('title') }}" name="title" placeholder="title" required>
                 @error('title')
                     <p class="text-xs text-rose-500">
                         {{ $message }}
@@ -17,7 +16,7 @@
             <div class="flex flex-col">
                 <label for="description">description</label>
                 <textarea class="dark:text-black {{ $errors->has('description') ? 'border border-rose-500' : '' }}" id="description"
-                    name="description" placeholder="description" required>{{ old('description', $post->description) }}</textarea>
+                    name="description" placeholder="description" required>{{ old('description') }}</textarea>
                 @error('description')
                     <p class="text-xs text-rose-500">
                         {{ $message }}
@@ -27,26 +26,23 @@
             <div class="flex flex-col">
                 <label for="content">content</label>
                 <textarea class="dark:text-black {{ $errors->has('content') ? 'border border-rose-500' : '' }}" id="content"
-                    name="content" placeholder="content" required>{{ old('content', $post->content) }}</textarea>
+                    name="content" placeholder="content" required>{{ old('content') }}</textarea>
                 @error('content')
                     <p class="text-xs text-rose-500">
                         {{ $message }}
                     </p>
                 @enderror
             </div>
-            <div class="flex space-x-2 items-center">
-                <div class="flex flex-col grow">
-                    <label for="banner">banner</label>
-                    <input class="dark:text-black {{ $errors->has('banner') ? 'border border-rose-500' : '' }}"
-                        type="file" id="banner" name="banner" placeholder="banner">
-                    @error('banner')
-                        <p class="text-xs text-rose-500">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-                <img src="{{ url('/storage/' . $post->banner_url) }}" alt="{{ $post->title }}"
-                    class="h-16 w-16 object-cover">
+
+            <div class="flex flex-col">
+                <label for="banner">banner</label>
+                <input class="dark:text-black {{ $errors->has('banner') ? 'border border-rose-500' : '' }}"
+                    type="file" id="banner" name="banner" placeholder="banner" required>
+                @error('banner')
+                    <p class="text-xs text-rose-500">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             <div class="flex flex-col">
                 <label for="tag_ids">tag</label>
@@ -54,7 +50,7 @@
                     id="tag_ids" name="tag_ids[]" placeholder="tag_ids" required multiple>
                     @foreach ($tags as $tag)
                         <option value="{{ $tag->id }}"
-                            {{ in_array($tag->id, old('tag_ids', $post->tags->pluck('id')->toArray())) ? 'selected' : '' }}>
+                            {{ in_array($tag->id, old('tag_ids', [])) ? 'selected' : '' }}>
                             {{ $tag->title }}</option>
                     @endforeach
                 </select>
@@ -67,7 +63,7 @@
 
 
 
-            <button type="submit" class="bg-green-500 rounded-lg py-2 text-lg">update</button>
+            <button type="submit" class="bg-green-500 rounded-lg py-2 text-lg">create</button>
         </form>
     </div>
 </x-app-layout>

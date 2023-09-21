@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTagRequest;
 use App\Models\Tag;
 use App\Models\User;
@@ -16,7 +17,7 @@ class TagController extends Controller
     {
         $data = Tag::paginate(10);
 
-        return view('tags.index', [
+        return view('admin.tags.index', [
             'tags' => $data
         ]);
     }
@@ -26,7 +27,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        return view('tags.create');
+        return view('admin.tags.create');
     }
 
     /**
@@ -38,7 +39,7 @@ class TagController extends Controller
 
         // User::where('id',auth()->id())->tags()->create($request->input);
 
-        return redirect()->route('tags.index');
+        return redirect()->route('admin.tags.index');
     }
 
     /**
@@ -46,7 +47,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        return view('tags.show', [
+        return view('admin.tags.show', [
             'tag' => $tag
         ]);
     }
@@ -60,7 +61,7 @@ class TagController extends Controller
             abort(403);
         }
 
-        return view('tags.edit', ['tag' => $tag]);
+        return view('admin.tags.edit', ['tag' => $tag]);
     }
 
     /**
@@ -78,7 +79,7 @@ class TagController extends Controller
 
         $tag->update($request->input());
 
-        return redirect()->route('tags.index');
+        return redirect()->route('admin.tags.index');
     }
 
     /**
@@ -87,6 +88,6 @@ class TagController extends Controller
     public function destroy(Tag $tag)
     {
         $tag->delete();
-        return redirect()->route('tags.index');
+        return redirect()->route('admin.tags.index');
     }
 }
